@@ -77,6 +77,10 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-rxjava2:$room_version"
 
+    //This dependency will be used for Oauth
+    //Google sign in dependency
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+
     // Stetho (inspection) dependency
     implementation 'com.facebook.stetho:stetho:1.5.1'
 
