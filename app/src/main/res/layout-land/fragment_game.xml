@@ -47,9 +47,11 @@
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/summary"
+    android:backgroundTint="@color/colorAccent"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:useCompatPadding="true"
+    android:src="@drawable/ic_summary"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintBottom_toBottomOf="parent"/>
 
