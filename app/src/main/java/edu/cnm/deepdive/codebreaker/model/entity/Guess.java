@@ -25,13 +25,13 @@ import java.util.UUID;
 public class Guess {
 
   @PrimaryKey(autoGenerate = true)
-  @ColumnInfo(name = "guess_key")
+  @ColumnInfo(name = "guess_id")
   private long id;
 
   @ColumnInfo(name = "game_id", index = true)
   private long gameId;
 
-  @ColumnInfo(name = "guess_key")
+  @ColumnInfo(name = "guess_key", typeAffinity = ColumnInfo.BLOB)
   private UUID guessKey;
 
   @NonNull
