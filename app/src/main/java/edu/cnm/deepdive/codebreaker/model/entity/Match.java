@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @SuppressWarnings("NotNullFieldNotInitialized")
-@Entity (
+@Entity(
     indices = {
         @Index(value = {"match_key"}, unique = true)
     }
@@ -87,14 +87,14 @@ public class Match {
     IN_PROGRESS, WON, LOST, FORFEIT;
 
     @TypeConverter
-  public static Integer stateToInteger (State value) {
-    return (value != null) ? value.ordinal() : null;
-  }
+    public static Integer stateToInteger(State value) {
+      return (value != null) ? value.ordinal() : null;
+    }
 
-  @TypeConverter
-  public static State integerToState (Integer value) {
-    return (value != null) ? State.values()[value] : null;
-  }
+    @TypeConverter
+    public static State integerToState(Integer value) {
+      return (value != null) ? State.values()[value] : null;
+    }
 
   }
 

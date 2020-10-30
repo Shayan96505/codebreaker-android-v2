@@ -22,10 +22,10 @@ public interface MatchDao {
   Single<Long> insert (Match match);
 
   @Insert(onConflict = OnConflictStrategy.IGNORE)
-  Single<Long> insert (Match... matches);
+  Single<List<Long>> insert (Match... matches);
 
   @Insert(onConflict = OnConflictStrategy.IGNORE)
-  Collection<List<Long>> insert (Collection<Match> matches);
+  Single<List<Long>> insert (Collection<Match> matches);
 
   @Update
   Single<Integer> update (Match match);

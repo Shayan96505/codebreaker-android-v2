@@ -45,7 +45,7 @@ public interface GameDao {
           + " gm.* "
           + "FROM Game AS gm "
           + "LEFT JOIN Guess AS gs ON gs.game_id = gm.game_id AND gs.correct = gm.code_length "
-          + "WHERE gs.guess_id IS NULL AND gm.match_id = :key "
+          + "WHERE gs.guess_id IS NULL AND gm.match_id = :id "
           + "ORDER BY gm.started ASC";
 
 
@@ -76,7 +76,7 @@ public interface GameDao {
   LiveData<Game> select(UUID key);
 
   @Query("SELECT * FROM Game WHERE match_id = :id")
-  LiveData<List<Game>> selectInMatch(UUID key);
+  LiveData<List<Game>> selectInMatch(long id);
 
   @Query(COMPLETED_GAMES_QUERY)
   LiveData<List<Game>> selectComplete();
