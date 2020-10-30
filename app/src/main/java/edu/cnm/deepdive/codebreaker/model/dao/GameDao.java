@@ -36,7 +36,7 @@ public interface GameDao {
       + " gm.* "
       + "FROM Game AS gm "
       + "LEFT JOIN Guess AS gs ON gs.game_id = gm.game_id AND gs.correct = gm.code_length "
-      + "WHERE gs.guess_id IS NULL AND gm.match_key IS NOT NULL "
+      + "WHERE gs.guess_id IS NULL AND gm.match_id IS NOT NULL "
       + "ORDER BY gm.started ASC";
 
 
@@ -45,7 +45,7 @@ public interface GameDao {
           + " gm.* "
           + "FROM Game AS gm "
           + "LEFT JOIN Guess AS gs ON gs.game_id = gm.game_id AND gs.correct = gm.code_length "
-          + "WHERE gs.guess_id IS NULL AND gm.match_key = :key "
+          + "WHERE gs.guess_id IS NULL AND gm.match_id = :key "
           + "ORDER BY gm.started ASC";
 
 
@@ -75,7 +75,7 @@ public interface GameDao {
   @Query("SELECT * FROM Game WHERE game_key = :key")
   LiveData<Game> select(UUID key);
 
-  @Query("SELECT * FROM Game WHERE match_key = :key")
+  @Query("SELECT * FROM Game WHERE match_id = :id")
   LiveData<List<Game>> selectInMatch(UUID key);
 
   @Query(COMPLETED_GAMES_QUERY)
@@ -88,7 +88,7 @@ public interface GameDao {
   LiveData<List<Game>> selectInCompleteInMatches();
 
   @Query(INCOMPLETE_GAMES_IN_MATCH_QUERY)
-  LiveData<List<Game>> selectInCompleteInMatch(UUID key);
+  LiveData<List<Game>> selectInCompleteInMatch(long id);
 
 
 }
