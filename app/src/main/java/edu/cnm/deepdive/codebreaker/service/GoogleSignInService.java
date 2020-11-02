@@ -2,15 +2,12 @@ package edu.cnm.deepdive.codebreaker.service;
 
 import android.app.Activity;
 import android.app.Application;
-import android.app.TaskInfo;
 import android.content.Intent;
-import com.facebook.stetho.BuildConfig;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 public class GoogleSignInService {
