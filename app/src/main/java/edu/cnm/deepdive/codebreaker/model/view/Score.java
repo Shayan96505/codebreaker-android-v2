@@ -3,8 +3,6 @@ package edu.cnm.deepdive.codebreaker.model.view;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.DatabaseView;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 import java.util.Date;
 
 @DatabaseView("SELECT "
@@ -24,7 +22,7 @@ public class Score {
   private String pool;
 
   @NonNull
-  private Date stated;
+  private Date started;
 
   @NonNull
   private Date submitted;
@@ -62,12 +60,12 @@ public class Score {
   }
 
   @NonNull
-  public Date getStated() {
-    return stated;
+  public Date getStarted() {
+    return started;
   }
 
-  public void setStated(@NonNull Date stated) {
-    this.stated = stated;
+  public void setStarted(@NonNull Date started) {
+    this.started = started;
   }
 
   @NonNull
