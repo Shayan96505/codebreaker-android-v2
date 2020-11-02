@@ -1,6 +1,5 @@
 package edu.cnm.deepdive.codebreaker.model.entity;
 
-import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

@@ -37,6 +37,7 @@ public class Guess {
   @NonNull
   private Date submitted = new Date();
 
+  // This is the text the user sends to the server as a guess.
   @NonNull
   private String text = "";
 

@@ -33,6 +33,7 @@ public interface GuessDao {
   @Delete
   Single<Integer> delete(Collection<Guess> guesses);
 
+  //Transaction holds values constant in the two tables or entities, until the SQL  query is finish
   @Transaction
   @Query("SELECT * FROM Guess WHERE guess_id = :id")
   LiveData<GuessWithGame> select(long id);
