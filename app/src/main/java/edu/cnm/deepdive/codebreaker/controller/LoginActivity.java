@@ -1,40 +1,49 @@
 package edu.cnm.deepdive.codebreaker.controller;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import edu.cnm.deepdive.codebreaker.R;
 import edu.cnm.deepdive.codebreaker.databinding.ActivityLoginBinding;
 import edu.cnm.deepdive.codebreaker.service.GoogleSignInService;
+import edu.cnm.deepdive.codebreaker.service.UserRepository;
 
 public class LoginActivity extends AppCompatActivity {
 
   private static final int LOGIN_REQUEST_CODE = 1000;
   private GoogleSignInService service;
   private ActivityLoginBinding binding;
+  private UserRepository userRepository;
 
+  @SuppressLint("CheckResult")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     service = GoogleSignInService.getInstance();
+    userRepository = new UserRepository(this);
+    //noinspection ResultOfMethodCallIgnored
     service.refresh()
-        .addOnSuccessListener((account) -> switchToMain())
-        .addOnFailureListener((throwable) -> {
-
-          binding = ActivityLoginBinding.inflate(getLayoutInflater());
-          binding.signIn.setOnClickListener((v) -> service.startSignin(this, LOGIN_REQUEST_CODE));
-          setContentView(binding.getRoot());
-        });
+        .subscribe(
+            this::updateAndSwitch,
+            (throwable) -> {
+              binding = ActivityLoginBinding.inflate(getLayoutInflater());
+              binding.signIn
+                  .setOnClickListener((v) -> service.startSignin(this, LOGIN_REQUEST_CODE));
+              setContentView(binding.getRoot());
+            }
+        );
   }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-    if(requestCode == LOGIN_REQUEST_CODE) {
+    if (requestCode == LOGIN_REQUEST_CODE) {
       service.completeSignIn(data)
-          .addOnSuccessListener((account)-> switchToMain())
+          .addOnSuccessListener(this::updateAndSwitch)
           .addOnFailureListener((throwable) ->
               Toast.makeText(this, R.string.login_faillure_message,
                   Toast.LENGTH_LONG).show());
@@ -44,11 +53,21 @@ public class LoginActivity extends AppCompatActivity {
     super.onActivityResult(requestCode, resultCode, data);
   }
 
-  private void switchToMain(){
-    Intent intent = new Intent(this, MainActivity.class)
-    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-  startActivity(intent);
+  private void updateAndSwitch(GoogleSignInAccount account) {
 
+    userRepository.createUser(account)
+        .subscribe(
+            (user) -> {
+              Intent intent = new Intent(this, MainActivity.class)
+                  .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+              startActivity(intent);
+            },
+            (throwable) -> {
+              // TODO Remove this after development complete.
+              //FIXME fix this
+              Log.e(getClass().getSimpleName(), throwable.getMessage(), throwable);
+              throw new RuntimeException(throwable);
+            }
+        );
   }
-
 }

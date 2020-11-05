@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 import edu.cnm.deepdive.codebreaker.model.entity.User;
@@ -13,7 +14,7 @@ import io.reactivex.Single;
 @Dao
 public interface UserDao {
 
-  @Insert
+  @Insert(onConflict = OnConflictStrategy.IGNORE)
   Single<Long> insert(User user);
 
   @Update
@@ -26,6 +27,6 @@ public interface UserDao {
   LiveData<User> selectById(long userId);
 
   @Query("SELECT * FROM user_profile WHERE oauth_key = :oauthKey")
-  Maybe<User> selectByOauthKey(String oauthKey);
+  Single<User> selectByOauthKey(String oauthKey);
 
 }

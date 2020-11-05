@@ -11,6 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import edu.cnm.deepdive.codebreaker.BuildConfig;
+import io.reactivex.Single;
 
 public class GoogleSignInService {
 
@@ -48,9 +49,12 @@ public class GoogleSignInService {
   }
 
   //return a task to silently sign the user in if their token is expired!
-  public Task<GoogleSignInAccount> refresh() {
-    return client.silentSignIn()
-        .addOnSuccessListener(this::setAccount);
+  public Single<GoogleSignInAccount> refresh() {
+    return Single.create((emitter) ->
+        client.silentSignIn()
+          .addOnSuccessListener(emitter::onSuccess)
+          .addOnFailureListener(emitter::onError)
+    );
   }
 
   public void startSignin(Activity activity, int requestCode) {
