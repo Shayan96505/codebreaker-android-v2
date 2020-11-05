@@ -26,8 +26,11 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        def connection_properties = "$projectDir/../../../services/codebreaker.properties"
         buildConfigField "String", "CLIENT_ID", quoted(
-                getProperty("$projectDir/../../../services/codebreaker.properties","client_id"))
+                getProperty(connection_properties,"client_id"))
+        buildConfigField "String", "BASE_URL",
+                quoted(getProperty(connection_properties, "base_url"))
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -95,6 +98,19 @@ dependencies {
     //This dependency will be used for Oauth
     //Google sign in dependency
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
+
+    //added GSON dependency
+    //Google Json Parser dependency
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    //Retrofit (Rest client) with Reactive X & Gson integration
+    def retrofit_version = '2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
+    //OkHttp logging dependency
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
 
     // Stetho (inspection) dependency
     implementation 'com.facebook.stetho:stetho:1.5.1'
