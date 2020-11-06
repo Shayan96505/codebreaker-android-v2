@@ -50,10 +50,15 @@ public class GoogleSignInService {
 
   //return a task to silently sign the user in if their token is expired!
   public Single<GoogleSignInAccount> refresh() {
-    return Single.create((emitter) ->
-        client.silentSignIn()
-          .addOnSuccessListener(emitter::onSuccess)
-          .addOnFailureListener(emitter::onError)
+    return Single.create((emitter) -> {
+          client.silentSignIn()
+              .addOnSuccessListener(this::setAccount)
+              .addOnSuccessListener((account) -> {
+                setAccount(account);
+                emitter.onSuccess(account);
+              })
+              .addOnFailureListener(emitter::onError);
+        }
     );
   }
 
