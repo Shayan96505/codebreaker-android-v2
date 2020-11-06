@@ -47,19 +47,16 @@ public class UserRepository {
 
   public Single<User> getServerUserProfile() {
     return signInService.refresh()
-        .flatMap((account) ->
-            webService.getProfile(getBearerToken(account.getIdToken()))
-                .subscribeOn(Schedulers.io())
-                .flatMap((user) ->
-                    userDao.selectByOauthKey(account.getId())
+        .observeOn(Schedulers.io())
+        .flatMap((account) -> webService.getProfile(getBearerToken(account.getIdToken()))
+                .flatMap((user) -> userDao.selectByOauthKey(account.getId())
                         .flatMap((localUser) -> {
                           localUser.setDisplayName(user.getDisplayName());
                           return userDao.update(localUser)
                               .map((count) -> localUser);
                         })
                 )
-        )
-        .subscribeOn(Schedulers.io());
+        );
   }
 
   private String getBearerToken(String idToken) {
