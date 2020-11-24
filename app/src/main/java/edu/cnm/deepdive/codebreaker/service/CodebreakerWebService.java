@@ -28,6 +28,9 @@ public interface CodebreakerWebService {
   //@GET("matches/{matchId}")
   //Single<Match> getMatch(@Header("Authorization"))
 
+  @POST("matches")
+  Single<Match> startMatch(@Header("Authorization") String bearerToken, @Body Match match);
+
   static CodebreakerWebService getInstance() {
     return InstanceHolder.INSTANCE;
   }
@@ -42,8 +45,8 @@ public interface CodebreakerWebService {
       // create a Gson object but ignore those fields without the expose annotation
       Gson gson = new GsonBuilder()
           .excludeFieldsWithoutExposeAnnotation()
+          .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
           .create();
-
       // there are different levels of logging so you can specify what you want to get back
       HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
       //setting how much data we want to get back depending on whether or not we're debugging.
